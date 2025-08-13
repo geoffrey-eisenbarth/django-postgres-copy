@@ -231,6 +231,12 @@ class CopyQuerySet(ConstraintQuerySet):
                     "drop_constraints=False and drop_indexes=False."
                 )
 
+            if kwargs.get("update_conflicts"):
+                raise ValueError(
+                    "update_conflicts is mutually exclusive with "
+                    "drop_constraints or drop_indexes."
+                )
+
         # Create a mapping dictionary if none was provided
         mapping_dict = mapping if mapping is not None else {}
 
