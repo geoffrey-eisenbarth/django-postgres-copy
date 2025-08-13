@@ -229,6 +229,18 @@ Keyword Argument       Description
 ``ignore_conflicts``   Specify True to ignore unique constraint or exclusion
                        constraint violation errors. The default is False.
 
+``update_conflicts``   Specify True to update rows that fail insertion due
+                       to conflicts. Requires both ``update_fields`` and
+                       ``unique_fields`` to be specified. The default is False.
+
+``update_fields``      When ``update_conflicts`` is ``True``, this specifies
+                       which model fields should be updated. If passed, this
+                       must be a list of field names. The default is None.
+
+``unique_fields``      When ``update_conflicts`` is ``True``, this specifies
+                       which fields might be in conflict. If passed, this must
+                       be a list of field names. The default is None.
+
 ``using``              Sets the database to use when importing data.
                        Default is None, which will use the ``'default'``
                        database.
