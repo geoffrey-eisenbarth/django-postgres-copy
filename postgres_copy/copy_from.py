@@ -384,10 +384,10 @@ class CopyMapping:
                     SET {values}
                     WHERE ({new}) IS DISTINCT FROM ({old});
             """.format(
-                target=", ".join(f.column for f in self.unique_fields),
-                values=", ".join(f"{c}=EXCLUDED.{c}" for c in update_columns),
-                new=", ".join(f"{model_table}.{c}" for c in update_columns),
-                old=", ".join(f"EXCLUDED.{c}" for c in update_columns),
+                target=", ".join(f'"{f.column}"' for f in self.unique_fields),
+                values=", ".join(f'"{c}"=EXCLUDED."{c}"' for c in update_columns),
+                new=", ".join(f'"{model_table}"."{c}"' for c in update_columns),
+                old=", ".join(f'EXCLUDED."{c}"' for c in update_columns),
             )
         else:
             suffix = ";"
