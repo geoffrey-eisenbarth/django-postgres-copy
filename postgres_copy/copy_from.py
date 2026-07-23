@@ -458,7 +458,10 @@ class CopyMapping:
 
         # Tack on static fields
         for v in self.static_mapping.values():
-            temp_fields.append("'%s'" % v)
+            if v is None:
+                temp_fields.append("NULL")
+            else:
+                temp_fields.append("'%s'" % str(v).replace("'", "''"))
 
         # Join it all together
         options["temp_fields"] = ", ".join(temp_fields)

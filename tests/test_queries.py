@@ -621,6 +621,28 @@ class PostgresCopyFromTest(BaseTest):
         )
 
     @mock.patch("django.db.connection.validate_no_atomic_block")
+    def test_static_none_value(self, _):
+        ExtendedMockObject.objects.from_csv(
+            self.name_path,
+            dict(name="NAME", dt="DATE"),
+            static_mapping=dict(static_val=1, static_string="test", number=None),
+        )
+        self.assertEqual(
+            ExtendedMockObject.objects.filter(number__isnull=True).count(), 3
+        )
+
+    @mock.patch("django.db.connection.validate_no_atomic_block")
+    def test_static_value_with_quote(self, _):
+        ExtendedMockObject.objects.from_csv(
+            self.name_path,
+            dict(name="NAME", number="NUMBER", dt="DATE"),
+            static_mapping=dict(static_val=1, static_string="O'B"),
+        )
+        self.assertEqual(
+            ExtendedMockObject.objects.filter(static_string="O'B").count(), 3
+        )
+
+    @mock.patch("django.db.connection.validate_no_atomic_block")
     def test_bad_static_values(self, _):
         with self.assertRaises(ValueError):
             ExtendedMockObject.objects.from_csv(
