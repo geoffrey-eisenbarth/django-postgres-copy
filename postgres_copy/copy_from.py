@@ -422,8 +422,10 @@ class CopyMapping:
             if field is not None:
                 model_fields.append('"%s"' % field.get_attname_column()[1])
 
-        for k in self.static_mapping.keys():
-            model_fields.append('"%s"' % k)
+        for field_name in self.static_mapping.keys():
+            field = self.get_field(field_name)
+            if field is not None:
+                model_fields.append('"%s"' % field.get_attname_column()[1])
 
         options["model_fields"] = ", ".join(model_fields)
 
